@@ -1,26 +1,48 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {Component} from 'react';
 import './App.css';
+import ToDo from './Components/ToDo'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  constructor(){
+    super()
+    this.state={
+      newTask: '',
+      taskList: [],
+    }
+    this.handleAddTask = this.handleAddTask.bind(this)
+  }
+
+  handleChange(e){
+    this.setState({
+      newTask: e.target.value 
+    })
+  }
+
+  handleAddTask(){
+    this.setState({
+      taskList: [...this.state.taskList, this.state.newTask],
+      newTask: ''
+    })
+  }
+
+  render(){
+    let mappedTaskList = this.state.taskList.map(e => {
+      return <ToDo task={e}/>
+    })
+    //console.log(this.state.taskList, this.state.newTask)
+    return (
+      <div className="App">
+        <h1>To Do List</h1>
+        <input placeholder='Enter new task'
+        value={this.state.newTask}
+        onChange={e => this.handleChange(e)}/>
+        <button onClick={this.handleAddTask}>Add</button>
+        
+        {mappedTaskList}
+      </div>
+    );
+  }
+  
 }
 
 export default App;
